@@ -7,7 +7,7 @@ const App = () => {
   const [secondsLeft, setSecondsLeft] = useState(300);
   const [isMainTimerUsed, setIsMainTimerUsed] = useState(true);
 
-  useInterval(counter, isMainTimerUsed ? 1000 : null);
+  useInterval(counter, isMainTimerUsed ? 1000 : null); //custom hook, stops interval if delay is null
 
   /**
    * Counter
@@ -29,7 +29,7 @@ const App = () => {
     if (min < 10) {
       setMinutes("0" + min);
     }
-    if (min === 1) {
+    if (min < 2) {
       setIsResend(true);
     }
     if (min === 0 && sec === 0) {
@@ -73,12 +73,16 @@ const App = () => {
 
   return (
     <div style={{ textAlign: "center" }}>
-      <label>
-        Your OTP is expiring in{" "}
-        <span style={{ fontWeight: "bold" }}>
-          {minutes}:{seconds}
-        </span>
-      </label>
+      {isMainTimerUsed ? (
+        <label>
+          Your OTP is expiring in{" "}
+          <span style={{ fontWeight: "bold" }}>
+            {minutes}:{seconds}
+          </span>
+        </label>
+      ) : (
+        <label>Your OTP has expired.</label>
+      )}
       <br />
       <button disabled={!isResend} onClick={restartCountDown}>
         Resend OTP
